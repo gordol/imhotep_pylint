@@ -5,7 +5,6 @@ import re
 class PyLint(Tool):
     response_format = re.compile(r'(?P<filename>.*):(?P<line_num>\d+):'
                                  '(?P<message>.*)')
-    pylintrc_filename = '.pylintrc'
 
     configs = ('.pylintrc', 'pylintrc')
 
@@ -29,8 +28,8 @@ class PyLint(Tool):
     def get_command(self, dirname, **kwargs):
         cmd = 'pylint --output-format=parseable -rn'
         for config in self.configs:
-            if os.path.exists(os.path.join(dirname, self.pylintrc_filename)):
+            if os.path.exists(os.path.join(dirname, config)):
                 cmd += " --rcfile=%s" % os.path.join(
-                    dirname, self.pylintrc_filename)
-                continue
+                    dirname, config)
+                break
         return cmd
